@@ -334,4 +334,7 @@ function WorldFlightMapProvider:SetTaxiState(state)
 	self.taxiOpen = state
 end
 
+function WorldMapFrame:ResetTitleAndPortraitIcon()
+end
+
 WorldMapFrame:AddDataProvider(WorldFlightMapProvider)
