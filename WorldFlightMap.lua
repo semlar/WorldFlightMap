@@ -335,6 +335,7 @@ function WorldFlightMapProvider:SetTaxiState(state)
 end
 
 function WorldMapFrame:ResetTitleAndPortraitIcon()
+	-- Placeholder for missing mixin method that gets called when the map is opened
 end
 
 WorldMapFrame:AddDataProvider(WorldFlightMapProvider)
