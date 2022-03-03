@@ -162,6 +162,7 @@ function WorldFlightMapProvider:OnEvent(event, ...)
 				if instanceID == 2481 then
 					if not IsAddOnLoaded('Blizzard_FlightMap') then
 						UIParentLoadAddOn('Blizzard_FlightMap')
+						FlightMapFrame:UnregisterAllEvents()
 						flightMapFrame = FlightMapFrame
 					else
 						FlightMapFrame =  flightMapFrame
