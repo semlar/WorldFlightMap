@@ -199,7 +199,7 @@ function WorldFlightMapProvider:OnEvent(event, ...)
 			self:RefreshAllData()
 		end
 	elseif event == 'TAXIMAP_CLOSED' then
-		if IsAddOnLoaded('Blizzard_FlightUI') then
+		if FlightMapFrame ~= WorldMapFrame then
 			flightMapFrame:OnEvent(event, ...)
 			FlightMapFrame = WorldMapFrame
 			return
