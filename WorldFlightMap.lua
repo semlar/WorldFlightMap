@@ -7,6 +7,7 @@ local IconScale = 1.0
 -- End of user settings
 ---------------------------------------------------------
 
+local flightMapFrame = FlightMapFrame
 -- InFlight uses FlightMapFrame directly, so it's necessary to change references
 FlightMapFrame = WorldMapFrame
 -- TaxiFrame = WorldMapFrame
@@ -156,6 +157,21 @@ function WorldFlightMapProvider:OnEvent(event, ...)
 		if InCombatLockdown() then
 			CloseTaxiMap()
 		else
+			if IsInInstance() then
+				local _, _, _, _, _, _, _, instanceID = GetInstanceInfo()
+				if instanceID == 2481 then
+					if not IsAddOnLoaded('Blizzard_FlightMap') then
+						UIParentLoadAddOn('Blizzard_FlightMap')
+						flightMapFrame = FlightMapFrame
+					else
+						FlightMapFrame =  flightMapFrame
+					end
+
+					ShowUIPanel(flightMapFrame)
+					return
+				end
+			end
+
 			self:SetTaxiState(true)
 			self.taxiMap = GetMapSize(GetTaxiMapID())
 			
@@ -183,6 +199,12 @@ function WorldFlightMapProvider:OnEvent(event, ...)
 			self:RefreshAllData()
 		end
 	elseif event == 'TAXIMAP_CLOSED' then
+		if IsAddOnLoaded('Blizzard_FlightUI') then
+			flightMapFrame:OnEvent(event, ...)
+			FlightMapFrame = WorldMapFrame
+			return
+		end
+
 		self:SetTaxiState(false)
 
 		CloseTaxiMap()
