@@ -278,7 +278,7 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 				pin.taxiNodeData = taxiNodeData;
 				pin.owner = self;
 				pin.linkedPins = {};
-				pin:SetFlightPathStyle(taxiNodeData.textureKitPrefix, taxiNodeData.state);
+				pin:SetFlightPathStyle(taxiNodeData.textureKit, taxiNodeData.state);
 				
 				pin:UpdatePinSize(taxiNodeData.state);
 				
