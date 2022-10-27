@@ -1,8 +1,8 @@
-## Interface: 90200
+## Interface: 100000
 ## Title: WorldFlightMap
 ## Notes: Replaces the regular flight map with the world map
 ## Author: Semlar
-## Version: 9.0.2.2
+## Version: 10.0.0.0
 ## Dependencies: Blizzard_FlightMap
 
 LinePool.lua
