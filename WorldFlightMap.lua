@@ -157,6 +157,7 @@ function WorldFlightMapProvider:OnEvent(event, ...)
 		if InCombatLockdown() then
 			CloseTaxiMap()
 		else
+			local overrideMapID
 			if IsInInstance() then
 				local _, _, _, _, _, _, _, instanceID = GetInstanceInfo()
 				if instanceID == 2481 then
@@ -170,15 +171,17 @@ function WorldFlightMapProvider:OnEvent(event, ...)
 
 					ShowUIPanel(flightMapFrame)
 					return
+				elseif instanceID == 2516 then
+					overrideMapID = 2093
 				end
 			end
 
 			self:SetTaxiState(true)
-			self.taxiMap = GetMapSize(GetTaxiMapID())
+			self.taxiMap = GetMapSize(overrideMapID or GetTaxiMapID())
 			
 			local playerMapID = C_Map.GetBestMapForUnit('player')
 			local playerMapInfo = C_Map.GetMapInfo(playerMapID)
-			self.playerContinent = GetCurrentMapContinent(playerMapID)
+			self.playerContinent = GetCurrentMapContinent(overrideMapID or playerMapID)
 			
 			if not self:GetMap():IsShown() and not InCombatLockdown() then
 				ToggleWorldMap()
@@ -188,7 +191,7 @@ function WorldFlightMapProvider:OnEvent(event, ...)
 				-- We used to zoom out until we could fit multiple flight points on the same map, but this is simpler
 				-- if playerMapInfo.mapType > Enum.UIMapType.Zone and playerMapInfo.parentMapID then
 				if playerMapInfo.parentMapID then
-					local parentZone = GetParentZone(playerMapID)
+					local parentZone = overrideMapID or GetParentZone(playerMapID)
 					if parentZone then
 						self:GetMap():SetMapID(parentZone)
 					end
