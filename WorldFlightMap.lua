@@ -267,7 +267,9 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 				
 				-- Only show arrows on zone maps
 				local arrow = GetArrow(pin)
-				if self.worldMap.mapInfo and self.worldMap.mapInfo.mapType and self.worldMap.mapInfo.mapType > 2 and taxiNodeData.state == Enum.FlightPathState.Reachable then
+				if taxiNodeData.textureKit == 'FlightMaster_ProgenitorObelisk' then
+					arrow:Hide()
+				elseif self.worldMap.mapInfo and self.worldMap.mapInfo.mapType and self.worldMap.mapInfo.mapType > 2 and taxiNodeData.state == Enum.FlightPathState.Reachable then
 					-- Restart animation so the arrows move in sync
 					ResetAnimation(arrow.group)
 					arrow:Show()
@@ -281,7 +283,7 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 				pin.taxiNodeData = taxiNodeData;
 				pin.owner = self;
 				pin.linkedPins = {};
-				pin:SetFlightPathStyle(taxiNodeData.textureKitPrefix, taxiNodeData.state);
+				pin:SetFlightPathStyle(taxiNodeData.textureKit, taxiNodeData.state);
 				
 				pin:UpdatePinSize(taxiNodeData.state);
 				
