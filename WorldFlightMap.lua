@@ -279,9 +279,11 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 
 				pin:SetPosition(taxiNodeData.position:GetXY());
 				pin.taxiNodeData = taxiNodeData;
+				pin.textureKit = taxiNodeData.textureKit;
+				pin.isMapLayerTransition = taxiNodeData.isMapLayerTransition;
 				pin.owner = self;
 				pin.linkedPins = {};
-				pin:SetFlightPathStyle(taxiNodeData.textureKitPrefix, taxiNodeData.state);
+				pin:SetFlightPathStyle(taxiNodeData.state);
 				
 				pin:UpdatePinSize(taxiNodeData.state);
 				
@@ -293,7 +295,7 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 				pin:SetScalingLimits(1.25, initialScaleFactor, initialScaleFactor * 1.25)
 				--pin:SetIgnoreGlobalPinScale(true)
 				
-				pin:SetShown(taxiNodeData.state ~= Enum.FlightPathState.Unreachable); -- Only show if part of a route, handled in the route building functions
+				pin:SetShown(taxiNodeData.state ~= Enum.FlightPathState.Unreachable or taxiNodeData.isMapLayerTransition); -- Only show if part of a route, handled in the route building functions
 
 				for poiPin in self:GetMap():EnumeratePinsByTemplate("FlightPointPinTemplate") do
 					if poiPin.name == taxiNodeData.name and playAnim then
