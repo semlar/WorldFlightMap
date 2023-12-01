@@ -6,4 +6,5 @@
 ## Dependencies: Blizzard_FlightMap
 
 LinePool.lua
+WorldFlightPin.xml
 WorldFlightMap.lua
