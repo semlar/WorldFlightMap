@@ -259,7 +259,7 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 			if drawPin then
 				-- Duplicating all of this from frameXML because we need to raise the frame level of the pins
 				local playAnim = taxiNodeData.state ~= Enum.FlightPathState.Unreachable;
-				local pin = self:GetMap():AcquirePin("FlightMap_FlightPointPinTemplate", playAnim);
+				local pin = self:GetMap():AcquirePin("WorldFlightPinTemplate", playAnim);
 				
 				-- For the sake of having other addons treat our buttons like normal taxi map buttons
 				_G['TaxiButton' .. taxiNodeData.slotIndex] = pin
@@ -295,7 +295,7 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 				
 				pin:SetShown(taxiNodeData.state ~= Enum.FlightPathState.Unreachable); -- Only show if part of a route, handled in the route building functions
 
-				for poiPin in self:GetMap():EnumeratePinsByTemplate("FlightPointPinTemplate") do
+				for poiPin in self:GetMap():EnumeratePinsByTemplate("WorldFlightPinTemplate") do
 					if poiPin.name == taxiNodeData.name and playAnim then
 						poiPin:Hide()
 					else
@@ -305,6 +305,18 @@ function WorldFlightMapProvider:AddFlightNode(taxiNodeData)
 				end
 			end
 		end
+	end
+end
+
+function WorldFlightMapProvider:RemoveAllData()
+	self:GetMap():RemoveAllPinsByTemplate("WorldFlightPinTemplate")
+	self:GetMap():ResetTitleAndPortraitIcon()
+
+	if self.highlightLinePool then
+		self.highlightLinePool:ReleaseAll()
+	end
+	if self.backgroundLinePool then
+		self.backgroundLinePool:ReleaseAll()
 	end
 end
 
@@ -378,3 +390,8 @@ function WorldMapFrame:UpdateTitleAndPortraitIcon()
 end
 
 WorldMapFrame:AddDataProvider(WorldFlightMapProvider)
+
+-- use modified pin mixin and template to prevent taint
+-- https://github.com/Stanzilla/WoWUIBugs/issues/453
+WorldFlightPinMixin = CreateFromMixins(FlightMap_FlightPointPinMixin)
+WorldFlightPinMixin.SetPassThroughButtons = function() end
